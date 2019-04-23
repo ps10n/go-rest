@@ -127,6 +127,9 @@ func createMessage(w http.ResponseWriter, r *http.Request) {
 	msg.ID = id.String()
 	msgs = append(msgs, msg)
 	//idTest = id.String()
-	client.Set(id.String(), msg.Message, time.Hour)
+	err1 := client.Set( /*id.String()*/ msg.ID, msg.Message, 0).Err()
+	if err1 != nil {
+		panic(err1)
+	}
 	json.NewEncoder(w).Encode(msg)
 }
