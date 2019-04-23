@@ -90,18 +90,26 @@ func getMessage(w http.ResponseWriter, r *http.Request) {
 	//var msgs []postmessage
 	for _, item := range msgs {
 		if item.ID == params["id"] {
+			textid := client.Get(params["id"])
+			file, erro := os.Create("test.txt")
+			if erro != nil {
+				fmt.Println("Unable to create file:", erro)
+				os.Exit(1)
+			}
+			defer file.Close()
+			file.WriteString(textid.String())
 			json.NewEncoder(w).Encode(item)
 			return
 		}
 	}
-	textid := client.Get(params["id"])
-	file, erro := os.Create("test.txt")
-	if erro != nil {
-		fmt.Println("Unable to create file:", erro)
-		os.Exit(1)
-	}
-	defer file.Close()
-	file.WriteString(textid.String())
+	//textid := client.Get(params["id"])
+	// file, erro := os.Create("test.txt")
+	// if erro != nil {
+	// 	fmt.Println("Unable to create file:", erro)
+	// 	os.Exit(1)
+	// }
+	// defer file.Close()
+	// file.WriteString(textid.String())
 	json.NewEncoder(w).Encode(&postmessage{})
 }
 
